@@ -82,6 +82,7 @@
     <Compile Include="IO\Mouse.cs" />
     <Compile Include="IO\XXDevice\XX8Relay.cs" />
     <Compile Include="License\License.cs" />
+    <Compile Include="Net\DNS.cs" />
     <Compile Include="Net\Time.cs" />
     <Compile Include="Net\UDP.cs" />
     <Compile Include="Net\WebAPI.cs" />
