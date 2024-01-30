@@ -11,8 +11,15 @@ namespace GeneralUtility.Net
     {
         public static string GetHostNameByIP(string strIP)
         {
-            IPHostEntry clsHostEntry = Dns.GetHostEntry(strIP);
-            return clsHostEntry.HostName;
+            try
+            {
+                IPHostEntry clsHostEntry = Dns.GetHostEntry(strIP);
+                return clsHostEntry.HostName;
+            } 
+            catch 
+            {
+                return "None";
+            }   
         }
 
         public static string GetIPByHostName(string strHostName)
