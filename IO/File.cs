@@ -272,7 +272,7 @@ namespace GeneralUtility.IO
         /// <param name="eEncode">編碼格式，預設為 Encode.Default 。</param>
         public static void WriteFile(string strPath, string strFileDatas, Encode eEncode = Encode.Default)
         {
-            WriteFile(strPath, new string[] { strFileDatas }, eEncode);
+            WriteFile(strPath, new string[] { strFileDatas }, GetEncoding(eEncode));
         }
 
         /// <summary>
@@ -283,8 +283,8 @@ namespace GeneralUtility.IO
         /// <param name="strFileDatas">資料內容。</param>
         /// <param name="eEncode">編碼格式，預設為 Encode.Default 。</param>
         public static void WriteFile(string strPath, List<string> strFileDatas, Encode eEncode = Encode.Default)
-        {
-            WriteFile(strPath, strFileDatas.ToArray(), eEncode);
+        {  
+            WriteFile(strPath, strFileDatas.ToArray(), GetEncoding(eEncode));
         }
 
         /// <summary>
@@ -294,39 +294,66 @@ namespace GeneralUtility.IO
         /// <param name="strPath">完整路徑及副檔名。</param>
         /// <param name="strFileDatas">資料內容。</param>
         /// <param name="eEncode">編碼格式，預設為 Encode.Default 。</param>
-        public static void WriteFile(string strPath, string[] strFileDatas, Encode eEncode = Encode.Default)
+        public static void WriteFile(string strPath, string strFileDatas, Encoding eEncodeing)
+        {
+            WriteFile(strPath, new string[] { strFileDatas }, eEncodeing);
+        }
+
+        /// <summary>
+        /// 單純進行資料存檔。
+        /// <para><b>注意！如果該路徑原本就存在，將會蓋掉原本資料!!</b></para>
+        /// </summary>
+        /// <param name="strPath">完整路徑及副檔名。</param>
+        /// <param name="strFileDatas">資料內容。</param>
+        /// <param name="eEncode">編碼格式，預設為 Encode.Default 。</param>
+        public static void WriteFile(string strPath, List<string> strFileDatas, Encoding eEncodeing)
+        {
+            WriteFile(strPath, strFileDatas.ToArray(), eEncodeing);
+        }
+
+        private static Encoding GetEncoding(Encode eEncode = Encode.Default)
+        {
+            Encoding eEncodeing;
+            switch (eEncode)
+            {
+                case Encode.ASCII:
+                    eEncodeing = Encoding.ASCII;
+                    break;
+                case Encode.BigEndianUnicode:
+                    eEncodeing = Encoding.BigEndianUnicode;
+                    break;
+                case Encode.Default:
+                    eEncodeing = Encoding.Default;
+                    break;
+                case Encode.Unicode:
+                    eEncodeing = Encoding.Unicode;
+                    break;
+                case Encode.UTF32:
+                    eEncodeing = Encoding.UTF32;
+                    break;
+                case Encode.UTF7:
+                    eEncodeing = Encoding.UTF7;
+                    break;
+                case Encode.UTF8:
+                    eEncodeing = Encoding.UTF8;
+                    break;
+                default:
+                    eEncodeing = Encoding.UTF8;
+                    break;
+            }
+            return eEncodeing;
+        }
+        /// <summary>
+        /// 單純進行資料存檔。
+        /// <para><b>注意！如果該路徑原本就存在，將會蓋掉原本資料!!</b></para>
+        /// </summary>
+        /// <param name="strPath">完整路徑及副檔名。</param>
+        /// <param name="strFileDatas">資料內容。</param>
+        /// <param name="eEncode">編碼格式，預設為 Encode.Default 。</param>
+        public static void WriteFile(string strPath, string[] strFileDatas, Encoding eEncodeing)
         {
             if (strFileDatas != null)
             {
-                Encoding eEncodeing;
-                switch (eEncode)
-                {
-                    case Encode.ASCII:
-                        eEncodeing = Encoding.ASCII;
-                        break;
-                    case Encode.BigEndianUnicode:
-                        eEncodeing = Encoding.BigEndianUnicode;
-                        break;
-                    case Encode.Default:
-                        eEncodeing = Encoding.Default;
-                        break;
-                    case Encode.Unicode:
-                        eEncodeing = Encoding.Unicode;
-                        break;
-                    case Encode.UTF32:
-                        eEncodeing = Encoding.UTF32;
-                        break;
-                    case Encode.UTF7:
-                        eEncodeing = Encoding.UTF7;
-                        break;
-                    case Encode.UTF8:
-                        eEncodeing = Encoding.UTF8;
-                        break;
-                    default:
-                        eEncodeing = Encoding.UTF8;
-                        break;
-                }
-
                 lock (g_objDiskLock)
                 {
                     try
